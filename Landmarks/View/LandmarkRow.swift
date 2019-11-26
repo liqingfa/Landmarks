@@ -12,9 +12,16 @@ struct LandmarkRow: View {
     var landamrk: Landmark
     var body: some View {
         HStack {
-            landamrk.image.resizable().frame(width: 50, height: 50)
+            landamrk.image.resizable()
+                .frame(width: 50, height: 50)
+                .cornerRadius(2)
             Text(landamrk.name)
             Spacer()
+            if landamrk.isFavorite {
+                Image(systemName: "star.fill")
+                    .imageScale(.medium)
+                    .foregroundColor(.yellow)
+            }
         }
     }
 }
