@@ -10,7 +10,11 @@ import SwiftUI
 
 struct LandmarkDetail: View {
     @EnvironmentObject var userData: UserData
-    
+    @State var isModal: Bool = false {
+        didSet {
+            print("\(oldValue)")
+        }
+    }
     var landMark:Landmark
     
     var landmarkIndex: Int {
@@ -33,6 +37,7 @@ struct LandmarkDetail: View {
                     Text(landMark.name)
                     .font(.title)
                     Button(action: {
+                        self.isModal = true
                         self.userData.landmarks[self.landmarkIndex].isFavorite.toggle()
                     }) {
                         if self.userData.landmarks[self.landmarkIndex].isFavorite {
@@ -40,6 +45,8 @@ struct LandmarkDetail: View {
                         } else {
                             Image(systemName: "star").foregroundColor(.gray)
                         }
+                    }.sheet(isPresented: $isModal) {
+                        Badge()
                     }
                 }
                 
@@ -52,7 +59,6 @@ struct LandmarkDetail: View {
                 }
             }
             .padding()
-            
             Spacer()
         }.navigationBarTitle(Text(landMark.name), displayMode: .inline)
     }
