@@ -10,11 +10,6 @@ import SwiftUI
 
 struct LandmarkDetail: View {
     @EnvironmentObject var userData: UserData
-    @State var isModal: Bool = false {
-        didSet {
-            print("\(oldValue)")
-        }
-    }
     var landMark:Landmark
     
     var landmarkIndex: Int {
@@ -26,7 +21,7 @@ struct LandmarkDetail: View {
         VStack {
             MapView(coordinate: landMark.locationCoordinate)
                 .frame(height:300)
-                .edgesIgnoringSafeArea(.top)
+                
             
             CircleImage(image: landMark.image)
                 .offset(y:-130)
@@ -34,10 +29,8 @@ struct LandmarkDetail: View {
             
             VStack(alignment: .leading) {
                 HStack {
-                    Text(landMark.name)
-                    .font(.title)
+                    Text(landMark.name).font(.title)
                     Button(action: {
-                        self.isModal = true
                         self.userData.landmarks[self.landmarkIndex].isFavorite.toggle()
                     }) {
                         if self.userData.landmarks[self.landmarkIndex].isFavorite {
@@ -45,22 +38,17 @@ struct LandmarkDetail: View {
                         } else {
                             Image(systemName: "star").foregroundColor(.gray)
                         }
-                    }.sheet(isPresented: $isModal) {
-                        Badge()
                     }
                 }
                 
                 HStack {
-                    Text(landMark.park)
-                        .font(.subheadline)
+                    Text(landMark.park).font(.subheadline)
                     Spacer()
-                    Text(landMark.state)
-                        .font(.subheadline)
+                    Text(landMark.state).font(.subheadline)
                 }
-            }
-            .padding()
+            }.padding()
             Spacer()
-        }.navigationBarTitle(Text(landMark.name), displayMode: .inline)
+        }.edgesIgnoringSafeArea(.top)
     }
 }
 
